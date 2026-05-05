@@ -95,12 +95,15 @@ Read the table carefully and describe one concrete example of each:
 
 1. **Update anomaly:** Which rows would need to be changed simultaneously if
    mechanic Huber raises his hourly rate to 70.00?
-2. **Insert anomaly:** Can a new mechanic be added before they work on their
+   >  We would need to change three rows simultaneously (Order 1001/Items 1 & 2, and Order 1003/Item 1) if mechanic Huber (M03) raises his hourly rate.
+   
+3. **Insert anomaly:** Can a new mechanic be added before they work on their
    first order? What is missing?
-3. **Delete anomaly:** What information is permanently lost if order 1002 is
+  >  We cannot add a new mechanic to the database until they are assigned an OrderNo and ItemNo because these form the primary key and cannot be NULL.
+   
+5. **Delete anomaly:** What information is permanently lost if order 1002 is
    deleted entirely?
-
-> *Your answers:*
+ >  If we delete Order 1002, we permanently lose all data for customer Novak, Jana (K02) and her car (HER-XY 44) because that is the only place they are recorded.
 
 ### Task 1b – Write Down Functional Dependencies
 
@@ -108,12 +111,19 @@ List all non-trivial functional dependencies you can identify in the flat table.
 Use the notation $X \rightarrow Y$.
 
 Hints:
-- Which attributes uniquely determine the customer?
-- Which attributes follow from the licence plate alone?
-- What does a single mechanic ID determine?
-- What only follows from the combination `(OrderNo, ItemNo)`?
+1- Which attributes uniquely determine the customer?
+  *answer*: CustNo -> CustName, CustCity
+  
+2- Which attributes follow from the licence plate alone?
+  *answer*: Plate -> Make, Model, Year
+  
+3- What does a single mechanic ID determine?
+> *answer*: MechId -> MechName, HourlyRate
+  
+4- What only follows from the combination `(OrderNo, ItemNo)`?
+>  *answer*: (OrderNo, ItemNo) -> MechId, Description, Hours
 
-> *Your FD list:*
+
 
 ### Questions for Task 1
 
@@ -121,17 +131,18 @@ Hints:
 respect to the primary key `(OrderNo, ItemNo)`? Justify your answer using the
 definition from Lecture 04.
 
-> *Your answer:*
+> We identify this as a partial dependency. This is because CustNo (which determines CustCity) is determined solely by OrderNo, which is only a part of the composite primary key.
 
 **Question 1.2:** Identify a transitive dependency in the flat table and explain
 why it violates 3NF.
 
-> *Your answer:*
+> We identify the chain OrderNo-> CustNo and CustNo -> CustName as a transitive dependency. This violates 3NF because a non-prime attribute (CustName) is determined by another non-prime attribute (CustNo) rather than directly by a candidate key.
 
 **Question 1.3:** Compute the attribute closure $\{\mathrm{OrderNo}\}^+$ using
 your FD list. Is `OrderNo` alone a superkey of the flat table?
 
-> *Your answer:*
+> We calculate the closure as: {OrderNo, Date, CustNo, CustName, CustCity, Plate, Make, Model, Year}.
+Answer: No, it is not a superkey because it does not uniquely identify every attribute in the table; it is missing ItemNo, MechId, Description, and Hours.
 
 ---
 
