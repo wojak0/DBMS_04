@@ -142,7 +142,7 @@ why it violates 3NF.
 your FD list. Is `OrderNo` alone a superkey of the flat table?
 
 
-> Answer: No, it is not a superkey because it does not uniquely identify every attribute in the table; it is missing ItemNo, MechId, Description, and Hours.
+> No it is not a superkey, because it does not uniquely identify every attribute in the table; it is missing ItemNo, MechId, Description, and Hours.
 
 ---
 
