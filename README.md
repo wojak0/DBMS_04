@@ -141,8 +141,8 @@ why it violates 3NF.
 **Question 1.3:** Compute the attribute closure $\{\mathrm{OrderNo}\}^+$ using
 your FD list. Is `OrderNo` alone a superkey of the flat table?
 
-> We calculate the closure as: {OrderNo, Date, CustNo, CustName, CustCity, Plate, Make, Model, Year}.
-Answer: No, it is not a superkey because it does not uniquely identify every attribute in the table; it is missing ItemNo, MechId, Description, and Hours.
+
+> Answer: No, it is not a superkey because it does not uniquely identify every attribute in the table; it is missing ItemNo, MechId, Description, and Hours.
 
 ---
 
