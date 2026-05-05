@@ -97,11 +97,11 @@ Read the table carefully and describe one concrete example of each:
    mechanic Huber raises his hourly rate to 70.00?
    >  We would need to change three rows simultaneously (Order 1001/Items 1 & 2, and Order 1003/Item 1) if mechanic Huber (M03) raises his hourly rate.
    
-3. **Insert anomaly:** Can a new mechanic be added before they work on their
+2. **Insert anomaly:** Can a new mechanic be added before they work on their
    first order? What is missing?
   >  We cannot add a new mechanic to the database until they are assigned an OrderNo and ItemNo because these form the primary key and cannot be NULL.
    
-5. **Delete anomaly:** What information is permanently lost if order 1002 is
+3. **Delete anomaly:** What information is permanently lost if order 1002 is
    deleted entirely?
  >  If we delete Order 1002, we permanently lose all data for customer Novak, Jana (K02) and her car (HER-XY 44) because that is the only place they are recorded.
 
@@ -112,10 +112,10 @@ Use the notation $X \rightarrow Y$.
 
 Hints:
 1- Which attributes uniquely determine the customer?
-  *answer*: CustNo -> CustName, CustCity
+ > *answer*: CustNo -> CustName, CustCity
   
 2- Which attributes follow from the licence plate alone?
-  *answer*: Plate -> Make, Model, Year
+>  *answer*: Plate -> Make, Model, Year
   
 3- What does a single mechanic ID determine?
 > *answer*: MechId -> MechName, HourlyRate
