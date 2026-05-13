@@ -22,3 +22,18 @@ JOIN "order" o     ON wi.order_no = o.order_no
 WHERE o.date BETWEEN '2026-03-01' AND '2026-03-31'
 GROUP BY m.mech_id
 ORDER BY total_hours DESC;
+-- Query 5c-1: Using EXCEPT (Set Difference)
+SELECT plate, model FROM vehicle
+EXCEPT
+SELECT v.plate, v.model 
+FROM vehicle v 
+JOIN "order" o ON v.plate = o.plate;
+
+-- Query 5c-2: Using NOT EXISTS (Correlated Subquery)
+SELECT v.plate, v.model 
+FROM vehicle v
+WHERE NOT EXISTS (
+    SELECT 1 
+    FROM "order" o 
+    WHERE o.plate = v.plate
+);
