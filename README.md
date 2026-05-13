@@ -663,14 +663,17 @@ The original flat table had 5 rows and 15 columns. The normalized schema has
 5 tables. At which data volume does normalization pay off most — at 5 rows or
 at 50,000? Justify with concrete reference to the anomalies from Task 1a.
 
-> *Your answer:*
+> 50,000 rows. At scale, redundancy wastes massive space, and a single name
+> change would require thousands of updates (Update Anomaly).
 
 **Question B – 3NF vs. BCNF:**  
 Lecture 04 explains that BCNF is not always dependency-preserving. Is this
 relevant for the workshop schema? Would a BCNF decomposition have looked
 different from the 3NF decomposition here?
 
-> *Your answer:*
+> Not relevant. We have simple primary keys with no overlapping dependencies.
+> For this schema, 3NF and BCNF are identical.
+> 
 
 **Question C – Redundant foreign key in `order`:**  
 `order` contains both `plate` (FK → `vehicle`) and `cust_no` (FK → `customer`).
@@ -678,7 +681,8 @@ Since `vehicle` itself contains `cust_no`, one might argue that `cust_no`
 in `order` is redundant and violates 3NF. Is that correct? When would such
 a deliberate denormalization be justified?
 
-> *Your answer:*
+> Yes, but justified. It preserves historical accuracy.
+> If a vehicle is sold, the old repair order should still point to the original customer, not the new owner.
 
 **Question D – NULL and order status:**  
 An order that has just been created may have no work items yet. What does the
@@ -686,12 +690,15 @@ current schema say about this case? Would the schema need to be extended to
 correctly represent an order's status (open / completed)? Sketch the necessary
 change.
 
-> *Your answer:*
+> Current: An order can exist without work items (no link needed).
+> Change: Add a status column to the order table (e.g., 'Open', 'Paid', 'Closed').
+
 
 > **Screenshot 4:** Take a screenshot showing the output of Query 5b directly
 > in `sqlite3` (with `.headers on` and `.mode column` activated).
 >
-> `[insert screenshot]`
+> <img width="894" height="624" alt="image" src="https://github.com/user-attachments/assets/997dd103-f622-4ece-abd4-b01deaa38aa1" />
+
 
 ---
 
