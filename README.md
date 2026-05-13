@@ -203,20 +203,25 @@ though the customer is also reachable via the vehicle's licence plate?
 Describe a realistic scenario where the direct link `order → customer` is
 necessary.
 
-> *Your answer:*
+> Yeah every non-key attribute now depends on the entire primary key in its respective table.
+>  We have successfully removed all partial dependencies.
 
 **Question 2.2:** Is the schema after the 3NF decomposition also in BCNF?
 Justify your answer using the definition: for every non-trivial FD $X \rightarrow Y$,
 $X$ must be a superkey.
 
-> *Your answer:*
+> We conclude all five relations are already in 3NF.
+> We removed transitive dependencies (like order -> cust_no -> cust_name) by separating the customer, vehicle, and mechanic entities into their own tables.
 
 **Question 2.3:** The hourly rate of a mechanic is stored in `mechanic`. If a
 mechanic changes their rate during the year, what problem arises for already
 completed orders? How could the schema be extended to correctly record
 historical hourly rates?
 
-> *Your answer:*
+> We verify the split between order and vehicle.
+> Shared attribute: plate.
+> FD: plate -> make, model, year, cust_no.
+> Conclusion: The split is lossless because the shared attribute (plate) is a superkey for the vehicle table.
 
 ---
 
@@ -324,7 +329,8 @@ scp <username>@<server>:/path/to/DBMS_04/schema.svg ~/Downloads/schema.svg
 > **Screenshot 2:** Take a screenshot showing the rendered diagram with all
 > five entities and their relationships.
 >
-> `[insert screenshot]`
+> <img width="962" height="813" alt="image" src="https://github.com/user-attachments/assets/038ac10f-1716-48c7-9a28-6b90db2ed4f0" />
+
 
 ### Task 3c – Commit
 
@@ -425,7 +431,8 @@ sqlite3 workshop.db ".tables"
 
 > **Screenshot 3:** Take a screenshot showing the `.tables` output.
 >
-> `[insert screenshot]`
+> <img width="846" height="114" alt="image" src="https://github.com/user-attachments/assets/2958613b-3043-4adf-8ff9-05add45ea028" />
+
 
 ### Task 4c – Insert Sample Data
 
