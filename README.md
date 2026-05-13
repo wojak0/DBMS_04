@@ -508,7 +508,8 @@ git commit -m "feat: DDL and sample data for normalized workshop schema"
 Justify both choices in terms of the domain — what does it mean for the
 business if an order is deleted versus if a customer is deleted?
 
-> *Your answer:*
+> Cascade (Work Items): If an order is deleted, its sub-tasks are useless and should go too
+> Restrict( Customer): Stops you from deleting a person if they still have cars or active orders in the system
 
 **Question 4.2:** Test referential integrity by running:
 
@@ -520,7 +521,8 @@ INSERT INTO work_item VALUES (9999, 1, 3, 'Ghost item', 1.0);
 What error do you get? What does this tell you about the difference between
 a constraint declared in DDL and one that is actually enforced at runtime?
 
-> *Your answer:*
+> FOREIGN KEY constraint failed
+> Lesson: DDL is the "law," but PRAGMA foreign_keys = ON is the "police." Without the police, the law isn't enforced.
 
 **Question 4.3:** Test the CHECK constraint:
 
@@ -530,7 +532,8 @@ INSERT INTO work_item VALUES (1001, 3, 3, 'Invalid', -0.5);
 
 What happens? What would happen if the CHECK constraint were missing?
 
-> *Your answer:*
+> CHECK constraint failed.
+> The Impact: Without the check, the DB would allow "negative work," which would break your billing and logic.
 
 ---
 
@@ -563,7 +566,10 @@ order 1003 (BMW 320i, 2026-03-12).
 `work_item`). In what order would the query optimizer ideally perform the joins —
 and why does the join order not affect the *result*, but does affect *performance*?
 
-> *Your answer:*
+> Join Order: The optimizer should ideally start with the Customer table since we have a specific filter (cust_name = 'Berger, Franz').
+> By starting there, it reduces the dataset to a single person before joining the larger tables.
+> Performance vs. Result: The join order doesn't affect the result because the inner join operation is commutative and associative (the output set is the same regardless of order).
+> However, it affects performance because joining small tables first keeps the "intermediate results" small, saving memory and CPU time.
 
 ---
 
@@ -592,7 +598,10 @@ least one work item). Sort descending by `total_hours`.
 What would `COUNT(*)` count instead, and why would the result differ in this
 case?
 
-> *Your answer:*
+> COUNT(*) would count the total number of work items (individual tasks), whereas COUNT(DISTINCT order_no) counts the number of unique orders
+> The Difference: In our data, Order 1001 has two work items performed by Huber. COUNT(*) would count that as 2 tasks,
+> but COUNT(DISTINCT) correctly counts it as 1 visit/order.
+> Using COUNT(*) would over-represent how many actual cars the mechanic worked on.
 
 ---
 
@@ -630,7 +639,11 @@ After that, the query should return `BOT-ZZ 1 | Yaris`.
 always produce the same result. Are there situations where one approach should
 be preferred in practice? Consider readability and extensibility.
 
-> *Your answer:*
+>Readability: EXCEPT is preferred for simple "Set A minus Set B" logic because it is very easy to read.
+>Extensibility: NOT EXISTS is preferred in practice because it is more powerful. It allows you to add complex filters inside the subquery (like excluding based on specific dates)
+>without changing the overall structure of the main query.
+
+
 
 ---
 
